@@ -32,6 +32,7 @@ class UserManager(BaseUserManager):
 
         return user
 
+
 # PermissionsMixin --> Functionality for the permissions & fields
 class User(AbstractBaseUser, PermissionsMixin):
 
