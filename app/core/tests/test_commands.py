@@ -2,7 +2,6 @@
 Test custom Django management commands.
 """
 
-from lib2to3.pytree import Base
 from unittest.mock import patch
 
 # call_command is a helper function that allows us to simulate or to
