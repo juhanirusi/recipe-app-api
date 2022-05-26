@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     # OUR OWN APPS
     'core',
+    'user',
 
     # REST_FRAMEWORK
     'rest_framework',
