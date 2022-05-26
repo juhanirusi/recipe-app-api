@@ -26,6 +26,6 @@ urlpatterns = [
     # interface for our API documentation
     # The 'url_name' will tell the swagger what schema
     # to use (it will use the schema defined above)
-    path('api/docs/', SpectacularSwaggerView.as_view(url_name='api-schema'),
-    name='api-docs'),
+    path('api/docs/', SpectacularSwaggerView.as_view(
+        url_name='api-schema'), name='api-docs'),
 ]
