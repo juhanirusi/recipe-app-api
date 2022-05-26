@@ -39,8 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # OUR APPS
+    # OUR OWN APPS
     'core',
+
+    # REST_FRAMEWORK
+    'rest_framework',
+
+    # OTHER
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -132,3 +138,9 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'core.User'
+
+# Configure the Django rest_framework to use the drf_spectacular
+# that's purpose is to make API documentation easier.
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}

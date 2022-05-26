@@ -3,7 +3,7 @@ Tests for models.
 """
 # Helper function
 from django.contrib.auth import get_user_model
-#Base class for tests
+# Base class for tests
 from django.test import TestCase
 
 
