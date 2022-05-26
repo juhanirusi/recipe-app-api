@@ -19,9 +19,13 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # Will look at our code and generate the schema file that we need for our project
+    # Will look at our code and generate the schema
+    # file that we need for our project
     path('api/schema/', SpectacularAPIView.as_view(), name='api-schema'),
-    # This URL / view will generate a graphical user interface for our API documentation
-    # The 'url_name' will tell the swagger what schema to use (it will use the schema defined above)
-    path('api/docs/', SpectacularSwaggerView.as_view(url_name='api-schema'), name='api-docs'),
+    # This URL / view will generate a graphical user
+    # interface for our API documentation
+    # The 'url_name' will tell the swagger what schema
+    # to use (it will use the schema defined above)
+    path('api/docs/', SpectacularSwaggerView.as_view(url_name='api-schema'),
+    name='api-docs'),
 ]
