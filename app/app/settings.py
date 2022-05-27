@@ -42,9 +42,11 @@ INSTALLED_APPS = [
     # OUR OWN APPS
     'core',
     'user',
+    'recipe',
 
     # REST_FRAMEWORK
     'rest_framework',
+    'rest_framework.authtoken',
 
     # OTHER
     'drf_spectacular',
