@@ -18,6 +18,7 @@ router = DefaultRouter()
 # -> AUTOMATICALLY GENERATED URLS DEPENDING ON THE
 # FUNCTIONALITY ENABLED ON THE VIEWSET --> supports CRUD + get, post, patch, delete
 router.register('recipes', views.RecipeViewSet)
+router.register('tags', views.TagViewSet)
 
 app_name = 'recipe'
 
