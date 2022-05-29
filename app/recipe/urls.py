@@ -19,6 +19,7 @@ router = DefaultRouter()
 # FUNCTIONALITY ENABLED ON THE VIEWSET --> supports CRUD + get, post, patch, delete
 router.register('recipes', views.RecipeViewSet)
 router.register('tags', views.TagViewSet)
+router.register('ingredients', views.IngredientViewSet)
 
 app_name = 'recipe'
 

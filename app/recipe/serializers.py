@@ -2,8 +2,17 @@
 Serializers for recipe APIs
 """
 
-from core.models import Recipe, Tag
+from core.models import Ingredient, Recipe, Tag
 from rest_framework import serializers
+
+
+class IngredientSerializer(serializers.ModelSerializer):
+    """Serializer for ingredients."""
+
+    class Meta:
+        model = Ingredient
+        fields = ['id', 'name']
+        read_only_fields = ['id']
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -20,15 +29,24 @@ class RecipeSerializer(serializers.ModelSerializer):
     # Now, we'll get to work with our TagSerializer in this serializer
     # it's kind of similar to a ForeignKey relationship in models.
     tags = TagSerializer(many=True, required=False)
+    ingredients = IngredientSerializer(many=True, required=False)
 
     class Meta:
         model = Recipe
-        # Add 'tags' to fields
-        fields = ['id', 'title', 'time_minutes', 'price', 'link', 'tags']
+        # Add 'tags' & 'ingredients' to fields
+        fields = [
+            'id', 'title', 'time_minutes', 'price', 'link', 'tags',
+            'ingredients'
+        ]
         read_only_fields = ['id']
 
+    # NAMED THIS METHOD WITH UNDERSCORE, CAUSE WE INTENT TO USE IT INTERNALLY ONLY!
+    # I.E. IT'S USED BY ONLY THIS SPECIFIC "RecipeSerializer" SERIALIZER.
     def _get_or_create_tags(self, tags, recipe):
-        """Handle getting or creating tags as needed."""
+        """
+        Handle getting or creating tags as needed.
+        i.e -> Get a tag or create one
+        """
         # Next, let's get our (authenticated) user requesting the serializer
         auth_user = self.context['request'].user
 
@@ -46,15 +64,32 @@ class RecipeSerializer(serializers.ModelSerializer):
             )
             recipe.tags.add(tag_obj)
 
+    # NAMED THIS METHOD WITH UNDERSCORE, CAUSE WE INTENT TO USE IT INTERNALLY ONLY!
+    # I.E. IT'S USED BY ONLY THIS SPECIFIC "RecipeSerializer" SERIALIZER.
+    def _get_or_create_ingredients(self, ingredients, recipe):
+        """
+        Handle getting or creating ingredients as needed.
+        i.e -> Get an ingredient or create one
+        """
+        auth_user = self.context['request'].user
+        for ingredient in ingredients:
+            ingredient_obj, create = Ingredient.objects.get_or_create(
+                user=auth_user,
+                **ingredient,
+            )
+            recipe.ingredients.add(ingredient_obj)
+
     def create(self, validated_data):
         """Create a recipe."""
         # First, let's assign all tags from data, and assign it to a
         # variable (that's a list) called tags.
         tags = validated_data.pop('tags', [])
+        ingredients = validated_data.pop('ingredients', [])
         # Then, with rest of the data (excluding tags), we'll create a new
         # recipe with those values
         recipe = Recipe.objects.create(**validated_data)
         self._get_or_create_tags(tags, recipe)
+        self._get_or_create_ingredients(ingredients, recipe)
 
         return recipe
 
@@ -64,11 +99,15 @@ class RecipeSerializer(serializers.ModelSerializer):
         # Let's store the tags in 'tags' variable &
         # if there are no tags set it to 'None'
         tags = validated_data.pop('tags', None)
+        ingredients = validated_data.pop('ingredients', None)
         # If the 'tags' variable contains tags, we'll clear them and call our
         # '_get_or_create_tags' function
         if tags is not None:
             instance.tags.clear()
             self._get_or_create_tags(tags, instance)
+        if ingredients is not None:
+            instance.ingredients.clear()
+            self._get_or_create_ingredients(ingredients, instance)
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
@@ -89,4 +128,14 @@ class RecipeDetailSerializer(RecipeSerializer):
     """
 
     class Meta(RecipeSerializer.Meta):
-        fields = RecipeSerializer.Meta.fields + ['description']
+        fields = RecipeSerializer.Meta.fields + ['description', 'image']
+
+
+class RecipeImageSerializer(serializers.ModelSerializer):
+    """Serializer for uploading images to recipes."""
+
+    class Meta:
+        model = Recipe
+        fields = ['id', 'image']
+        read_only_fields = ['id']
+        extra_kwargs = {'image': {'required': 'True'}}
