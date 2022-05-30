@@ -40,7 +40,8 @@ class RecipeSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['id']
 
-    # NAMED THIS METHOD WITH UNDERSCORE, CAUSE WE INTENT TO USE IT INTERNALLY ONLY!
+    # NAMED THIS METHOD WITH UNDERSCORE, CAUSE WE
+    # INTENT TO USE IT INTERNALLY ONLY!
     # I.E. IT'S USED BY ONLY THIS SPECIFIC "RecipeSerializer" SERIALIZER.
     def _get_or_create_tags(self, tags, recipe):
         """
@@ -57,14 +58,16 @@ class RecipeSerializer(serializers.ModelSerializer):
             # THE FUNCTIONALITY TO NOT CREATE DUPLICATE TAGS IN OUR SYSTEM!
             tag_obj, created = Tag.objects.get_or_create(
                 user=auth_user,
-                # Instead of writing name=tag['name'], we write it this way, because,
-                # if in the future we want the tags to have some other fields than
-                # just name, this functionality supports that.
+                # Instead of writing name=tag['name'], we write it
+                # this way, because, if in the future we want the tags
+                # to have some other fields than just name, this
+                # functionality supports that.
                 **tag,
             )
             recipe.tags.add(tag_obj)
 
-    # NAMED THIS METHOD WITH UNDERSCORE, CAUSE WE INTENT TO USE IT INTERNALLY ONLY!
+    # NAMED THIS METHOD WITH UNDERSCORE, CAUSE WE
+    # INTENT TO USE IT INTERNALLY ONLY!
     # I.E. IT'S USED BY ONLY THIS SPECIFIC "RecipeSerializer" SERIALIZER.
     def _get_or_create_ingredients(self, ingredients, recipe):
         """
@@ -93,7 +96,8 @@ class RecipeSerializer(serializers.ModelSerializer):
 
         return recipe
 
-    # Because we're updating an instance, we need to have 'instance' as a parameter
+    # Because we're updating an instance, we need to
+    # have 'instance' as a parameter.
     def update(self, instance, validated_data):
         """Update recipe."""
         # Let's store the tags in 'tags' variable &

@@ -16,7 +16,8 @@ router = DefaultRouter()
 # api/recipes & assign all of the different endpoints from our recipe
 # viewset to that endpoint:
 # -> AUTOMATICALLY GENERATED URLS DEPENDING ON THE
-# FUNCTIONALITY ENABLED ON THE VIEWSET --> supports CRUD + get, post, patch, delete
+# FUNCTIONALITY ENABLED ON THE VIEWSET:
+# --> supports CRUD + get, post, patch, delete
 router.register('recipes', views.RecipeViewSet)
 router.register('tags', views.TagViewSet)
 router.register('ingredients', views.IngredientViewSet)

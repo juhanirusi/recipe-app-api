@@ -24,7 +24,8 @@ from recipe import serializers
             OpenApiParameter(
                 'ingredients',
                 OpenApiTypes.STR,
-                description='Comma separated list of ingredient IDs to filter',
+                description='Comma separated list \
+                            of ingredient IDs to filter',
             )
         ]
     )
@@ -42,9 +43,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
         # format ["1, 2, 3"] and turn it into an integer list [1, 2, 3].
         return [int(str_id) for str_id in qs.split(',')]
 
-    # Override the 'get_queryset' method, so this viewset will show only recipes
-    # that the authenticated user requesting the page has made.
-    # IT'S BASICALLY AN ADDITIONAL FILTER TO THE 'Recipe.objects.all()' QUERYSET!
+    # Override the 'get_queryset' method, so this viewset
+    # will show only recipes that the authenticated user
+    # requesting the page has made. IT'S BASICALLY AN ADDITIONAL
+    # FILTER TO THE 'Recipe.objects.all()' QUERYSET!
     def get_queryset(self):
         """Retrieve recipes for authenticated user."""
         tags = self.request.query_params.get('tags')
@@ -83,11 +85,13 @@ class RecipeViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
     # We've added a custom action that applies when the method is POST
-    # detail=True -> This action will apply to the detail portion of our model view
-    # i.e. a specific id of a recipe, for example, list_view isn't a detail view, so
-    # this action won't be applied to that
-    # url_path -> Specifies a custom URL path for our action, in this case, called
-    # upload_image
+
+    # detail=True -> This action will apply to the detail portion of our
+    # model view i.e. a specific id of a recipe, for example, list_view
+    # isn't a detail view, so this action won't be applied to that
+
+    # url_path -> Specifies a custom URL path for our action, in this case,
+    # called upload_image
     @action(methods=['POST'], detail=True, url_path='upload_image')
     def upload_image(self, request, pk=None):
         """Upload an image to recipe."""
